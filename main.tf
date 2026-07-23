@@ -113,16 +113,46 @@ resource "aws_instance" "web" {
   vpc_security_group_ids      = [aws_security_group.web.id]
   associate_public_ip_address = true
 
-  user_data = <<-EOF
-              #!/bin/bash
-              yum update -y
-              yum install -y httpd
+  user_data_replace_on_change = true
 
-              systemctl start httpd
-              systemctl enable httpd
+  user_data = <<EOF
+#!/bin/bash
+set -eux
 
-              echo "<h1>Hello from Terraform!</h1>" > /var/www/html/index.html
-              EOF
+dnf install -y httpd
+systemctl enable --now httpd
+
+cat > /var/www/html/index.html <<'HTML'
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AWS Terraform Project</title>
+</head>
+<body style="font-family: Arial; text-align: center; margin-top: 80px;">
+  <h1>AWS Terraform Web Server</h1>
+  <h2>Built by Blade</h2>
+
+  <p>Infrastructure managed with Terraform</p>
+  <p>Hosted on Amazon EC2</p>
+  <p>Apache web server</p>
+  <p>Remote Terraform state stored in S3</p>
+  <p>Static Elastic IP</p>
+
+  <hr>
+
+  <h3>Project Components</h3>
+  <p>VPC</p>
+  <p>Public subnet</p>
+  <p>Internet gateway</p>
+  <p>Route table</p>
+  <p>Security group</p>
+  <p>EC2 instance</p>
+  <p>Elastic IP</p>
+  <p>S3 remote backend</p>
+</body>
+</html>
+HTML
+EOF
 
   tags = {
     Name = "${var.project_name}-web-server"
