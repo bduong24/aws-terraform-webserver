@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 jobs:
   terraform:
@@ -17,16 +18,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::211125337851:role/GitHubActionsTerraformPlanRole
+          aws-region: us-east-1
+
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v4
         with:
-          terraform_version: 1.5.7
+          terraform_version: 1.15.8
 
       - name: Terraform format check
         run: terraform fmt -check -recursive
 
       - name: Terraform initialize
-        run: terraform init -backend=false
+        run: terraform init
 
       - name: Terraform validate
         run: terraform validate
+
+      - name: Terraform plan
+        run: terraform plan -no-color
