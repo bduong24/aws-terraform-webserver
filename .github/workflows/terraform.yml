@@ -18,9 +18,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v3
+        uses: hashicorp/setup-terraform@v4
         with:
-          terraform_version: 1.5.8
+          terraform_version: 1.5.7
 
       - name: Terraform format check
         run: terraform fmt -check -recursive
