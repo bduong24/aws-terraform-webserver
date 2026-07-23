@@ -125,7 +125,7 @@ cat > /var/www/html/index.html <<'HTML'
 </head>
 <body style="font-family: Arial; text-align: center; margin-top: 80px;">
   <h1>AWS Terraform Web Server</h1>
-  <h2>Built by Blade</h2>
+  <h2>Built by Brenda</h2>
 
   <p>Infrastructure managed with Terraform</p>
   <p>Hosted on Amazon EC2</p>
