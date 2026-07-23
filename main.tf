@@ -149,6 +149,10 @@ cat > /var/www/html/index.html <<'HTML'
 HTML
 EOF
 
+  lifecycle {
+    ignore_changes = [user_data]
+  }
+
   tags = {
     Name        = "${var.project_name}-web-server"
     Environment = "Lab"
